@@ -1,0 +1,3 @@
+[tool.pyright]
+include = ["app.py","story_book_agents"]
+exclude = [".cache","**/__pycache__"]
