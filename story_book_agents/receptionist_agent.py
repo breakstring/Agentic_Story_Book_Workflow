@@ -1,4 +1,4 @@
-''' '''
+''' This module defines the ReceptionistAgent class, which is responsible for collecting user requirements.'''
 
 from autogen import AssistantAgent
 
