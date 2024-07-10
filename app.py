@@ -12,16 +12,15 @@ from story_book_agents import StoryEditorAgent, ITAssistantAgent, ReceptionistAg
 from story_book_agents.tools.utils import save_story_content
 
 
+# prepare the LLM configurations
 dotenv.load_dotenv()
-
 gpt_config_list_default = [{
-        "model": os.environ.get("MODEL"),
-        "api_key": os.environ.get("API_KEY"),
-        "base_url": os.environ.get("BASE_URL"),
-        "api_type": os.environ.get("API_TYPE"),
-        "api_version": os.environ.get("API_VERSION"),
-    }]
-
+    "model": os.environ.get("MODEL"),
+    "api_key": os.environ.get("API_KEY"),
+    "base_url": os.environ.get("BASE_URL"),
+    "api_type": os.environ.get("API_TYPE"),
+    "api_version": os.environ.get("API_VERSION"),
+}]
 gpt_config_high_temperature = {
     "config_list": gpt_config_list_default,
     "temperature": 0.7,
@@ -33,13 +32,13 @@ gpt_config_low_temperature = {
     "cache_seed": None
 }
 
+
 user_agent = UserProxyAgent(
     name="User",
     llm_config=False,
     human_input_mode="ALWAYS",
     code_execution_config=False,
 )
-
 
 producer_agent = ProducerAgent(gpt_config_low_temperature)
 reception_agent = ReceptionistAgent(gpt_config_high_temperature)
@@ -63,6 +62,7 @@ def story_draft_group_speaker_selection_func(
     """
     故事草稿组的发言选择函数
     """
+    _groupchat = groupchat
     if last_speaker == it_assistant_agent:
         return None
     else:
@@ -134,9 +134,9 @@ story_draft_chat = {
 # entry point
 if __name__ == '__main__':
     # Start logging
-    logging_session_id = autogen.runtime_logging.start(
+    LOGGING_SESSION_ID = autogen.runtime_logging.start(
         config={"dbname": "./output/logs.db"})
-    print("Logging session ID: " + str(logging_session_id))
+    print("Logging session ID: " + str(LOGGING_SESSION_ID))
 
     chat_results = autogen.agentchat.initiate_chats([
         reception_chat,
