@@ -27,7 +27,7 @@ STORY_EDITOR_AGENT_SYSTEM_MESSAGE = """
 <Story>
     <Title>故事标题</Title>
     <Content>故事内容</Content>
-<Stroy>
+</Story>
 
 """
 STORY_EDITOR_AGENT_DESCRIPTION = "This agent is responsible for creating a kid's story book based on the user's input."
