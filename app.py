@@ -66,7 +66,8 @@ def main():
                                     """
             }
         },
-        # The Story Draft Group includes agents such as the Story Editor, Story Critic, Producer, and IT Assistant. They communicate through a group chat to create, review, and store the story content.
+        # The Story Draft Group includes agents such as the Story Editor, Story Critic, Producer, and IT Assistant.
+        # They communicate through a group chat to create, review, and store the story content.
         story_draft_groupchat.set_story_draft_chat()
     ])
     story_id = chat_results[1].summary
@@ -81,4 +82,3 @@ def main():
 # entry point
 if __name__ == '__main__':
     main()
-    
