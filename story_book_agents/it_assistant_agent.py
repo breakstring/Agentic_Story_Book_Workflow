@@ -3,15 +3,15 @@
 from autogen import AssistantAgent
 
 
-IT_ASSISTANT_AGENT_NAME="Team_Assistant"
+IT_ASSISTANT_AGENT_NAME="IT_Assistant"
 IT_ASSISTANT_AGENT_SYSTEM_MESSAGE="""
-你是团队中的IT助理，你的任务是辅助团队成员完成任务。
-主要工作是：
-- 生成故事的ID
-- 保存故事内容
+You are the IT assistant in the team. Your task is to assist team members in completing their tasks.
+Your main responsibilities are:
+- Generate a story ID for the story content.
+- Save the story content.
 
 """
-IT_ASSISTANT_AGENT_DESCRIPTION = "生成故事的ID，保存故事内容。"
+IT_ASSISTANT_AGENT_DESCRIPTION = "IT assistant, generate the story id and save stroy content."
 
 class ITAssistantAgent(AssistantAgent):
     ''' IT assistant agent'''
