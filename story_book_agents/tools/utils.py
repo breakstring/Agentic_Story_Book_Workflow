@@ -92,4 +92,29 @@ def save_storyboard_by_story_id(story_id: Annotated[str, "Story ID"], storyboard
                   'created_at': datetime.datetime.now().timestamp()}
     db.insert(storyboard)
     db.close()
-    return "Success"
+    return "STORYBOARD_SAVED"
+
+def save_prompts_by_story_id(story_id:Annotated[str, "Story ID"], prompts_content:Annotated[str, "Prompts Content"])->Annotated[str, "Result"]:
+    """
+    Save prompts by story ID
+
+    参数：
+    story_id (Annotated[str, "Story ID"]): Story ID
+    prompts_content (Annotated[str, "Prompts Content"]): Prompts content
+
+    返回值：
+    Annotated[str, "Result"]: Result
+
+    """
+    root = ET.fromstring(prompts_content)
+    prompts_items = [{child.tag: child.text for child in item}
+                        for item in root.findall('StoryboardItem')]
+
+    db = TinyDB('output/prompts.json',
+                storage=CachingMiddleware(MyJSONStorage))
+    prompts = {'story_id': story_id,
+                  'prompts_content': prompts_items,
+                  'created_at': datetime.datetime.now().timestamp()}
+    db.insert(prompts)
+    db.close()
+    return "PROMPTS_SAVED"

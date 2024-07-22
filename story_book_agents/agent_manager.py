@@ -10,5 +10,7 @@ class AgentManager:
         self.default_producer_agent = None
         self.default_storyboard_editor_agent = None
         self.defualt_storyboard_critic_agent = None
+        self.default_text_to_image_prompt_editor_agent = None
+        self.default_text_to_image_prompt_critic_agent = None
 
 agent_manager_instance = AgentManager()

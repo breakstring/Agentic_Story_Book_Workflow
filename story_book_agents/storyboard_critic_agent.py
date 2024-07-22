@@ -38,7 +38,7 @@ If you think the storyboard needs modifications, please output your critique str
 Here are two examples of correct output formats:
 
 Example 1 (when no modifications are needed):
-CRITIC_DONE
+STORYBOARD_CRITIC_DONE
 
 Example 2 (when modifications are needed):
 <StoryboardCritic>

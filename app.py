@@ -7,7 +7,7 @@ import dotenv
 import agentops
 
 from autogen import UserProxyAgent
-from story_book_agents import agent_manager_instance, story_draft_groupchat,storyboard_groupchat
+from story_book_agents import agent_manager_instance, story_draft_groupchat, storyboard_groupchat
 
 import story_book_agents
 
@@ -72,11 +72,13 @@ def main():
     ])
     story_id = chat_results[1].summary
     print("Story ID: " + story_id)
-    chat_results2= autogen.agentchat.initiate_chats(
-        [storyboard_groupchat.set_storyboard_chat(story_id)]
+    chat_results2 = autogen.agentchat.initiate_chats(
+        [
+            # in this storyboard chatgroup, the agents create/critic/save the storyboard base on the story content.
+            storyboard_groupchat.set_storyboard_chat(story_id)
+        ]
     )
     print(chat_results2[0].summary)
-
 
 
 # entry point

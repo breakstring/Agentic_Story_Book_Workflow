@@ -32,7 +32,7 @@ If you receive feedback on the Storyboard, it may be provided in XML format as f
     <StoryboardItem>
         <Index>[Frame number]</Index>
         <Critic>
-[Your modification suggestions here]
+[Modification suggestions here]
         </Critic>
     </StoryboardItem>
     ...
