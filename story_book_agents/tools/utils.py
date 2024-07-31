@@ -6,7 +6,6 @@ import datetime
 from typing import Annotated
 import uuid
 import xml.etree.ElementTree as ET
-
 from tinydb import TinyDB, Query
 from tinydb.storages import JSONStorage
 from tinydb.middlewares import CachingMiddleware
@@ -27,11 +26,11 @@ def save_story_content(story_title: Annotated[str, "Story Title"], story_content
     """
     Save story content
 
-    参数：
+    Args:
     story_title (Annotated[str, "Story Title"]): Story title
     story_draft (Annotated[str, "Story Content"]): Story content
 
-    返回值：
+    Returns:
     Annotated[str, "Story ID"]: Story ID
 
     """
@@ -54,10 +53,10 @@ def load_story_content_by_id(story_id: Annotated[str, "Story ID"]) -> Annotated[
     """
     Load story content by ID
 
-    参数：
+    Args:
     story_id (Annotated[str, "Story ID"])：Story ID
 
-    返回值：
+    Returns:
     Annotated[str, "Story Content"]: Story content
 
     """
@@ -73,11 +72,11 @@ def save_storyboard_by_story_id(story_id: Annotated[str, "Story ID"], storyboard
     """
     Save storyboard by story ID
 
-    参数：
+    Args:
     story_id (Annotated[str, "Story ID"]): Story ID
     storyboard_content (Annotated[str, "Storyboard Content"]): Storyboard content
 
-    返回值：
+    Returns:
     Annotated[str, "Result"]: Result
 
     """
@@ -94,27 +93,84 @@ def save_storyboard_by_story_id(story_id: Annotated[str, "Story ID"], storyboard
     db.close()
     return "STORYBOARD_SAVED"
 
-def save_prompts_by_story_id(story_id:Annotated[str, "Story ID"], prompts_content:Annotated[str, "Prompts Content"])->Annotated[str, "Result"]:
+def get_storyboard_by_story_id(story_id: Annotated[str, "Story ID"]) -> Annotated[list[dict], "Storyboard Content"]:
+    """
+    Load storyboard by story ID
+
+    Args:
+    story_id (Annotated[str, "Story ID"]): Story ID
+
+    Returns:
+    Annotated[list[dict], "Storyboard Content"]: Storyboard content
+
+    """
+    db = TinyDB('output/storyboards.json',
+                storage=CachingMiddleware(MyJSONStorage))
+    storyboards = Query()
+    storyboard_content = db.search(storyboards.story_id == story_id)[0]
+    db.close()
+    return storyboard_content['storyboard_content']
+
+
+def save_prompts_by_story_id(story_id: Annotated[str, "Story ID"], prompts_content: Annotated[str, "Prompts Content"]) -> Annotated[str, "Result"]:
     """
     Save prompts by story ID
 
-    参数：
+    Args:
     story_id (Annotated[str, "Story ID"]): Story ID
     prompts_content (Annotated[str, "Prompts Content"]): Prompts content
 
-    返回值：
+    Returns:
     Annotated[str, "Result"]: Result
 
     """
     root = ET.fromstring(prompts_content)
     prompts_items = [{child.tag: child.text for child in item}
-                        for item in root.findall('StoryboardItem')]
+                     for item in root.findall('StoryboardItem')]
 
     db = TinyDB('output/prompts.json',
                 storage=CachingMiddleware(MyJSONStorage))
     prompts = {'story_id': story_id,
-                  'prompts_content': prompts_items,
-                  'created_at': datetime.datetime.now().timestamp()}
+               'prompts_content': prompts_items,
+               'created_at': datetime.datetime.now().timestamp()}
     db.insert(prompts)
     db.close()
     return "PROMPTS_SAVED"
+
+
+def get_prompts_by_story_id(story_id: Annotated[str, "Story ID"]) -> Annotated[list[dict], "Prompts Content"]:
+    """
+    Load prompts by story ID
+
+    Args:
+    story_id (Annotated[str, "Story ID"]): Story ID
+
+    Returns:
+    Annotated[list[dict], "Prompts Content"]: Prompts content
+
+    """
+    db = TinyDB('output/prompts.json',
+                storage=CachingMiddleware(MyJSONStorage))
+    prompts = Query()
+    prompts_content = db.search(prompts.story_id == story_id)[0]
+    db.close()
+    return prompts_content['prompts_content']
+
+
+def get_prompt_by_story_id_and_frame_number(story_id: Annotated[str, "Story ID"], frame_number: Annotated[int, "Frame number"]) -> Annotated[str, "Prompt Content"]:
+    """
+    Get prompt by story ID and frame number
+
+    Args:
+    story_id (Annotated[str, "Story ID"]): Story ID
+    frame_number (Annotated[int, "Frame number"]): Frame number
+
+    Returns:
+    Annotated[str, "Prompt Content"]: Prompt content
+
+    """
+    prompts_content = get_prompts_by_story_id(story_id)
+    for prompt in prompts_content:
+        if prompt["Index"] == str(frame_number):
+            return prompt["Prompt"]
+    raise ValueError(f"Frame number {frame_number} not found in prompts for story ID {story_id}")
