@@ -51,7 +51,7 @@ user_agent = UserProxyAgent(
 
 def main():
     """Main function."""
-    preliminary_story_requirements = "给我讲一个小狐狸的故事吧"
+    preliminary_story_requirements = "给我讲一个故事吧"
     chat_results = autogen.agentchat.initiate_chats([
         # Obtain preliminary requirements through the conversation with the Receptionist agent.
         {

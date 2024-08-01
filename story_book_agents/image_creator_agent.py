@@ -2,6 +2,8 @@
 
 import os
 from autogen import AssistantAgent, Agent
+
+from .tools.image import save_image_from_url
 from .image_generation_agent import ImageGenerationAgent
 from .image_critic_agent import ImageCriticAgent
 from .tools.utils import get_storyboard_by_story_id, get_prompt_by_story_id_and_frame_number
@@ -43,8 +45,11 @@ class ImageCreatorAgent(AssistantAgent):
             real_prompt = last_generation_result["content"][-1]["prompt"]
         else:
             real_prompt = img_prompt
-
-        print(f"Generated image URL: {img_url}")
+        
+        print(f"Generated image: {img_url}")
+        # if os environ IMAGE_SAVE_FAILURED_IMAGES is set to True, save the image
+        if bool(os.environ.get("IMAGE_SAVE_FAILURED_IMAGES", "False")):
+            save_image_from_url(story_id=self._story_id,frame_index=self._frame_number,image_url=img_url,is_final=False)
         return img_url, real_prompt
 
     def _reply_user(self, messages=None, sender=None, config=None):  # pylint: disable=unused-argument

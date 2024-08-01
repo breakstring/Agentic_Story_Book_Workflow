@@ -26,7 +26,7 @@ def dalle_client_factory() -> Union[OpenAI, AzureOpenAI]:
         return OpenAI(api_key=os.environ.get("DALLE_API_KEY"))
 
 
-def save_image_from_url(story_id: Annotated[str, "Story ID"], frame_index: Annotated[int, "Frame index"], image_url: Annotated[str, "Image URL"]) -> Annotated[str, "Image ID"]:
+def save_image_from_url(story_id: Annotated[str, "Story ID"], frame_index: Annotated[int, "Frame index"], image_url: Annotated[str, "Image URL"], is_final:Annotated[bool,"Is final image"]=False) -> Annotated[str, "Image filename"]:
     """
     Save image from URL
 
@@ -34,18 +34,25 @@ def save_image_from_url(story_id: Annotated[str, "Story ID"], frame_index: Annot
         story_id (Annotated[str, "Story ID"]): Story ID
         frame_index (Annotated[int, "Frame index"]): Frame index
         image_url (Annotated[str, "Image URL"]): Image URL
+        is_final (Annotated[bool,"Is final image"]): Is final image
 
     Returns:
-        Annotated[str, "Image ID"]: Image ID
+        Annotated[str, "Image filename"]: Image filename
     """
 
     response = requests.get(image_url, timeout=60)
     image = Image.open(BytesIO(response.content))
-    image_id = str(uuid.uuid4())
     output_dir = f"output/{story_id}/{frame_index}"
     os.makedirs(output_dir, exist_ok=True)
-    image.save(f"{output_dir}/{image_id}.png")
-    return image_id
+    image_name = ""
+    if is_final:
+        image_name = "image.png"
+    else:
+        image_id = str(uuid.uuid4())
+        image_name = f"{image_id}.png"
+    
+    image.save(f"{output_dir}/{image_name}")
+    return image_name
 
 
 def generate_image_by_prompt(prompt_content: Annotated[str, "Prompt Content"]) -> Annotated[tuple[str, str], "Image URL & revised prompt"]:
@@ -88,47 +95,3 @@ def generate_image_by_prompt(prompt_content: Annotated[str, "Prompt Content"]) -
         raise NotImplementedError(
             f"IMAGE_GENERATION_TYPE:{os.environ.get('IMAGE_GENERATION_TYPE')} not implemented")
 
-
-def generate_image_by_id(story_id: Annotated[str, "Story ID"], frame_index: Annotated[int, "Frame index"]) -> Annotated[str, "Image ID"]:
-    """
-    Generate image by story ID and frame ID
-
-    Args:
-        story_id (Annotated[str, "Story ID"]): Story ID
-        frame_index (Annotated[int, "Frame index"]): Frame index
-
-    Returns:
-        Annotated[str, "Image ID"]: Image ID
-    """
-    # get default prompt by story id and frame id
-    prompt_content = get_prompt_by_story_id_and_frame_number(
-        story_id, frame_index)
-    # generate image by prompts
-    img_url, revised_prompt = generate_image_by_prompt(prompt_content)
-    print(revised_prompt)
-    # save image to local
-    img_id = save_image_from_url(story_id, frame_index, img_url)
-    # save image id & revised prompt to local
-
-    return img_id
-
-
-def generate_image_by_storyid(story_id: Annotated[str, "Story ID"]):
-    """
-    Generate image by story ID
-
-    Args:
-        story_id (Annotated [str, "Story ID"]): Story ID
-
-    Returns:
-    """
-    print(f"Generating images for story id: {story_id}")
-    prompts = get_prompts_by_story_id(story_id)
-    for item in prompts:
-        index = item['Index']
-        prompt = item['Prompt']
-        print(f"Generating image for frame index: {index}")
-        img_url, revised_prompt = generate_image_by_prompt(prompt)
-        img_id = save_image_from_url(story_id, index, img_url)
-        print(f"Image ID: {img_id}")
-        print(f"Revised Prompt: {revised_prompt}")
