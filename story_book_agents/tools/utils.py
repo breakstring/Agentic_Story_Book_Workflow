@@ -1,7 +1,7 @@
 """
 utils tools for story_book_agents
 """
-
+import copy
 import datetime
 from typing import Annotated
 import uuid
@@ -93,6 +93,7 @@ def save_storyboard_by_story_id(story_id: Annotated[str, "Story ID"], storyboard
     db.close()
     return "STORYBOARD_SAVED"
 
+
 def get_storyboard_by_story_id(story_id: Annotated[str, "Story ID"]) -> Annotated[list[dict], "Storyboard Content"]:
     """
     Load storyboard by story ID
@@ -170,7 +171,37 @@ def get_prompt_by_story_id_and_frame_number(story_id: Annotated[str, "Story ID"]
 
     """
     prompts_content = get_prompts_by_story_id(story_id)
-    for prompt in prompts_content:
-        if prompt["Index"] == str(frame_number):
-            return prompt["Prompt"]
-    raise ValueError(f"Frame number {frame_number} not found in prompts for story ID {story_id}")
+    for frame in prompts_content:
+        if frame["Index"] == str(frame_number):
+            return frame["Prompt"]
+    raise ValueError(
+        f"Frame number {frame_number} not found in prompts for story ID {story_id}")
+
+
+def update_prompt_by_story_id_and_frame_number(story_id: Annotated[str, "Story ID"],
+                                               frame_number: Annotated[int, "Frame number"],
+                                               prompt: Annotated[str, "Prompt Content"]):
+    """
+    Update prompt by story ID and frame number
+
+    Args:
+    story_id (Annotated[str, "Story ID"]): Story ID
+    frame_number (Annotated[int, "Frame number"]): Frame number
+    prompt (Annotated[str, "Prompt Content"]): Prompt content
+
+    Returns:
+    Annotated[bool, "Result"]: Result
+
+    """
+    db = TinyDB('output/prompts.json',
+                storage=CachingMiddleware(MyJSONStorage))
+    prompts = Query()
+    story_prompts = copy.deepcopy(db.search(prompts.story_id == story_id)[0])
+
+    for frame in story_prompts['prompts_content']:
+        if frame["Index"] == str(frame_number):
+            frame["Prompt"] = prompt
+            break
+
+    db.update(story_prompts, prompts.story_id == story_id)
+    db.close()

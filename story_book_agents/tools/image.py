@@ -79,7 +79,7 @@ def generate_image_by_prompt(prompt_content: Annotated[str, "Prompt Content"]) -
                     return image_url, revised_prompt
                 else:
                     print(f"Attempt {attempt + 1} failed: No data in response")
-            except Exception as e:
+            except Exception as e: # pylint: disable=broad-except
                 print(f"Attempt {attempt + 1} failed: {e}")
 
         raise RuntimeError(f"Failed to generate image after {max_retries} attempts")
