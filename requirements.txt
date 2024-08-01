@@ -1,6 +1,8 @@
 agentops==0.2.6
+azure-cognitiveservices-speech==1.38.0
 llmlingua==0.2.2
 pillow==10.4.0
+pip-chill==1.0.3
 pyautogen==0.2.33
 replicate==0.27.0
 tinydb==4.8.0
