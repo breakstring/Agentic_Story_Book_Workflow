@@ -307,7 +307,9 @@ pyrightconfig.json
 
 # End of https://www.toptal.com/developers/gitignore/api/visualstudiocode,pycharm,python
 .idea 
-output
+output/*
 autogen_logs
 .env
 AOAI_CONFIG_LIST.json
+
+!output/placeholder.txt
