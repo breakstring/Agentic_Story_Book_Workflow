@@ -1,10 +1,7 @@
 """ Image critic agent """
 
-from typing import Dict, List, Optional, Tuple, Union
-from autogen import OpenAIWrapper,Agent,AssistantAgent
-from autogen.agentchat.contrib.multimodal_conversable_agent import MultimodalConversableAgent
+from autogen import AssistantAgent
 
-from autogen._pydantic import model_dump
 
 IMAGE_CRITIC_AGENT_NAME = "Image_Critic"
 IMAGE_CRITIC_AGENT_SYSTEM_MESSAGE_TEMPLATE = """
@@ -33,11 +30,20 @@ Analyze the image based on the following criteria:
 
 After your analysis, respond in one of two ways:
 
-1. If you believe the image is satisfactory and doesn't require improvements, simply output:
+1. If you believe the image is satisfactory and doesn't require improvements, JUST SIMPLY OUTPUT:
 CRITIC_DONE
 
 2. If you think the image needs improvement, JUST provide a new prompt in the following format only:
 PROMPT:[Your improved prompt here]
+
+
+Here are two examples of correct output formats:
+
+Example 1 (when no modifications are needed):
+CRITIC_DONE
+
+Example 2 (when modifications are needed):
+PROMPT:A rabbit named Xiao Bai, perched on a branch of a tall apple tree brimming with bright red apples. He carefully picks a large ripe apple and enthusiastically takes big bites, showing clear enjoyment and contentment on his face. The environment is vibrant with lush green leaves and an intoxicating shade of red apples. The scene is rich with color and depicts Xiao Bai savoring the flavor of the succulent apple while sitting on the branch.
 
 
 Ensure your improved prompt addresses the specific areas that need enhancement while maintaining the core elements of the original prompt and story requirements.
@@ -50,7 +56,7 @@ IMAGE_CRITIC_AGENT_DESCRIPTION = "This agent is responsible for reviewing images
 class ImageCriticAgent(AssistantAgent):
     """ This agent is responsible for reviewing images based on storyboard scripts for children's storybooks. """
 
-    def __init__(self, gpt_config, storyboard: str, frame_number: int, prompt: str,*args,**kwargs,):
+    def __init__(self, gpt_config, storyboard: str, frame_number: int, prompt: str, *args, **kwargs,):
         super().__init__(
             name=IMAGE_CRITIC_AGENT_NAME,
             description=IMAGE_CRITIC_AGENT_DESCRIPTION,
@@ -63,31 +69,3 @@ class ImageCriticAgent(AssistantAgent):
             *args,
             **kwargs,
         )
-
-    def generate_oai_reply(
-        self,
-        messages: Optional[List[Dict]] = None,
-        sender: Optional[Agent] = None,
-        config: Optional[OpenAIWrapper] = None,
-    ) -> Tuple[bool, Union[str, Dict, None]]:
-        """Generate a reply using autogen.oai."""
-        client = self.client if config is None else config
-        if client is None:
-            return False, None
-        if messages is None:
-            messages = self._oai_messages[sender]
-
-        img_url_message = {
-            "content": [
-                {
-                    "type": "image_url",
-                    "image_url": {"url": messages[-1]["content"]},
-                }
-            ]
-        }
-        response = client.create(context=messages[-1].pop("context", None), messages=img_url_message)
-
-        extracted_response = client.extract_text_or_completion_object(response)[0]
-        if not isinstance(extracted_response, str):
-            extracted_response = model_dump(extracted_response)
-        return True, extracted_response

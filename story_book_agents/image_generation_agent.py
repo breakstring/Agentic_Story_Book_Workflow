@@ -8,6 +8,8 @@ IMAGE_GENERATION_AGENT_NAME = "Image_Generator"
 
 
 class ImageGenerationAgent(ConversableAgent):
+    """ This agent is responsible for generating images based on storyboard scripts for children's storybooks. """
+
     def __init__(self, gpt_config, *args, **kwargs):
         super().__init__(
             name=IMAGE_GENERATION_AGENT_NAME,
@@ -16,7 +18,7 @@ class ImageGenerationAgent(ConversableAgent):
             **kwargs)
 
         self.register_reply(
-            [Agent, None], ImageGenerationAgent.generate_dalle_reply)
+            [Agent, None], ImageGenerationAgent._generate_dalle_reply, position=0)
 
     def send(
         self,
@@ -29,7 +31,7 @@ class ImageGenerationAgent(ConversableAgent):
         # otherwise, the print log would be super long!
         super().send(message, recipient, request_reply, silent=True)
 
-    def generate_dalle_reply(self, messages: Optional[List[Dict]], sender: "Agent", config) -> Tuple[bool, Union[str, Dict, None]]:
+    def _generate_dalle_reply(self, messages: Optional[List[Dict]], sender: "Agent", config) -> Tuple[bool, Union[str, Dict, None]]: # pylint: disable=unused-argument
 
         if messages is None:
             messages = self._oai_messages[sender]
