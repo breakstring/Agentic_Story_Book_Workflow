@@ -46,10 +46,10 @@ def save_image_from_url(story_id: Annotated[str, "Story ID"], frame_index: Annot
     os.makedirs(output_dir, exist_ok=True)
     image_name = ""
     if is_final:
-        image_name = "image.png"
+        image_name = "image.jpg"
     else:
         image_id = str(uuid.uuid4())
-        image_name = f"{image_id}.png"
+        image_name = f"{image_id}.jpg"
     
     image.save(f"{output_dir}/{image_name}")
     return image_name

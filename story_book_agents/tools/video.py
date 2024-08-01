@@ -18,7 +18,7 @@ def create_video(story_id: Annotated[str,'story id'] ):
     clips = []
     for subdir in subdirs:
         subdir_path = os.path.join(output_directory, subdir)
-        image_path = os.path.join(subdir_path, 'image.png')
+        image_path = os.path.join(subdir_path, 'image.jpg')
         audio_path = os.path.join(subdir_path, 'voice.mp3')
         
         # 创建图像clip
