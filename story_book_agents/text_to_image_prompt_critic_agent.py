@@ -29,7 +29,7 @@ Your job is to carefully review these prompts, focusing on the following criteri
 
 If there are no modifications needed, simply output: PROMPT_CRITIC_DONE
 
-If modifications are needed, provide your feedback for the frames that require changes using the following XML format:
+If modifications are needed, **provide your feedback for the frames that require changes** using the following XML format:
 
 <PromptCritic>
     <StoryboardItem>

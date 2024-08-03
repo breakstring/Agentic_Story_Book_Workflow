@@ -37,7 +37,7 @@ dalle_config = {
 
 }
 
-agentops.init(api_key=os.environ.get("AGENTOPS_API_KEY"))
+#agentops.init(api_key=os.environ.get("AGENTOPS_API_KEY"))
 
 story_book_agents.init_agents(gpt_config_list_default)
 # create a UserProxyAgent instance

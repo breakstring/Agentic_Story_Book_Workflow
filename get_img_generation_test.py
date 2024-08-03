@@ -11,7 +11,7 @@ from story_book_agents.image_creator_agent import ImageCreatorAgent
 dotenv.load_dotenv(override=True)
 
 
-story_id = "8b403fab-0d8d-4c64-a72c-03b02ce1e4d6"
+story_id = "1dff69be-0eac-4845-8260-e422c712bc01"
 storyboard = get_storyboard_by_story_id(story_id=story_id)
 
 user_proxy = UserProxyAgent("UserProxyAgent",
