@@ -1,4 +1,4 @@
-[中文版](README.zh-cn.md)
+[英文版](README.md)
 
 ## Agentic Story Book Workflow
 基于 [AutoGen](https://microsoft.github.io/autogen/) 的一个儿童绘本制作多智能体工作流框架。
