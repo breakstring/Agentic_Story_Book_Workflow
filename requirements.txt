@@ -1,4 +1,5 @@
 agentops==0.2.6
+anthropic==0.32.0
 azure-cognitiveservices-speech==1.38.0
 llmlingua==0.2.2
 moviepy==1.0.3
