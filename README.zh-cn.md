@@ -1,4 +1,4 @@
-[英文版](README.md)
+[English](README.md)
 
 ## Agentic Story Book Workflow
 基于 [AutoGen](https://microsoft.github.io/autogen/) 的一个儿童绘本制作多智能体工作流框架。
@@ -25,8 +25,7 @@ https://github.com/user-attachments/assets/323d055a-27d9-487f-b8c4-2fad2df649cc
 ```
 pip install -r requirements.txt
 ```
-- 创建.env 文件，并复制 .env.example 中的内容过来，修改为您的对应的设置值。
-- 运行:创作故事
+- 创建.env 文件，并复制 .env.example 中的内容过来，修改为您的对应的设置值。执行下面的脚本来创作故事：
 ```
 python app.py
 ```

@@ -1,54 +1,55 @@
 [中文版](README.zh-cn.md)
 
 ## Agentic Story Book Workflow
-基于 [AutoGen](https://microsoft.github.io/autogen/) 的一个儿童绘本制作多智能体工作流框架。
+A multi-agent workflow framework for creating children's picture books based on [AutoGen](https://microsoft.github.io/autogen/).
+
 
 https://github.com/user-attachments/assets/323d055a-27d9-487f-b8c4-2fad2df649cc
 
 ## Agentic workflow
 ![MultiAgent](./images/MultiAgents.jpg)
-在代码中涉及到多种基于 AutoGen 的不同的多智能体协作方式。例如：
-- 在一开始，由 User_Proxy 代表用户和 Receptionist 来进行交流，从而采集用户的需求。
-- 在后继的两个环节中，均采用了 GroupChat 的机制，每个 GroupChat 中又分别设置了一个 GroupChat Manager 用来协调当前的 GroupChat 中的发言人角色。
-- 在两个 GroupChat 中，内容的创作角色（例如 Story Editor,Storboard Editor, Prompt Editor）均伴随着有一个进行该环节的评审的Agent。当他们的评审没有通过的话，由 GroupManger 发回内容创作 Editor 进行重新修改。
-- 最后的生成图片/视频/PPT 的环节，目前我将其放到了独立的代码中(generate.py)，一是便于我目前的使用，二是后继对于 GroupChat 的组织可能还会有所调整。所以这部分暂时由一个 Image Creator Agent 来负责，和前面所不同的是这是一个独立的 Agent，但是它自己内部又包含了两个 Sub-Agents，一个 Image Generation Agent 负责进行文生图的 AI 的调用。另外一个负责对于生成的图片的审查。
+The code involves various multi-agent collaboration methods based on AutoGen. For example:
+- Initially, the User_Proxy represents the user and communicates with the Receptionist to gather user requirements.
+- In the subsequent two stages, the GroupChat mechanism is used, with each GroupChat having a GroupChat Manager to coordinate the speakers in the current GroupChat.
+- In the two GroupChats, the content creation roles (e.g., Story Editor, Storyboard Editor, Prompt Editor) are accompanied by an Agent responsible for reviewing the content. If the review is not approved, the GroupManager sends it back to the content creation Editor for revision.
+- The final stage of generating images/videos/PPTs is currently placed in separate code (generate.py) for ease of use and potential future adjustments to the GroupChat organization. This part is temporarily handled by an Image Creator Agent, which is an independent Agent but contains two Sub-Agents internally: an Image Generation Agent responsible for AI-based image generation and another for reviewing the generated images.
 
-## 系统需求
-- **LLM**: 建议使用 ChatGPT-4o,目前代码基于 Azure OpenAI 服务中的 ChatGPT-4o 进行测试，理论上对于 OpenAI 的原生服务也应该可以支持，最多需要对于 Config 做微调。尽管 AutoGen 支持多种 LLM，但是经过实际测试使用 Claude 3.5 sonnet 时也无法100%严格的遵循 Prompt 中的指令，所以不建议使用其他 LLM。
-- **Text2Image**: 支持 DALL-E 3 以及 Replicate 中的 Flux schnell。但是从成本和速度上考虑的话我最终选用了 Replicate 中的 Flux Schnell API 端点。因为
-  - 在使用 Landscpae 或者 Portrait 模式的图片，HD 模式下DALL-E 3 的价格是 12$/100 张图，意味着每张图 0.12$，而且每张图要十多秒以上才能绘制完毕并得到结果。
-  - 但是采用 Flux Schnell 的 API 服务每张图的成本只有 0.003$，绘图时间一般在 1 ～2 秒。从成本和时间调度来说 Flux Schnell 似乎更加合适，哪怕你觉得 Schnell 版本的质量不高，要使用 Flux Dev 版本的 API 成本也只有 0.03$而已（Replicate 上的 pro 版本成本为 0.055$，但是由于似乎它在 CPU 上，绘图速度很慢我就没有尝试），您也可以根据自己的需求来调整。
-- Azure 账号，并开通 Speech 服务资源。
+## System Requirements
+- **LLM**: It is recommended to use ChatGPT-4o. The current code is tested based on the ChatGPT-4o service in Azure OpenAI. In theory, it should also support OpenAI's native services with minor configuration adjustments. Although AutoGen supports multiple LLMs, practical tests with Claude 3.5 sonnet showed that it could not strictly follow the instructions in the Prompt 100% of the time, so other LLMs are not recommended.
+- **Text2Image**: Supports DALL-E 3 and Flux Schnell from Replicate. Considering cost and speed, I ultimately chose the Flux Schnell API endpoint from Replicate because:
+  - Using DALL-E 3 in HD mode costs $12/100 images, meaning $0.12 per image, and each image takes more than ten seconds to generate.
+  - Using the Flux Schnell API service costs only $0.003 per image, with a drawing time of 1-2 seconds. From a cost and scheduling perspective, Flux Schnell seems more suitable. Even if you find the quality of the Schnell version low, using the Flux Dev version API costs only $0.03 per image (the pro version on Replicate costs $0.055, but it seems to run on CPU and is very slow, so I didn't try it). You can adjust according to your needs.
+- Azure account with Speech service resources enabled.
 
-## 如何使用
-- 创建 python 虚拟环境（我这里是在 Python 3.11 上进行的测试），并安装依赖包
+## How to use
+- Create a Python virtual environment (tested on Python 3.11) and install dependencies:
 ```
 pip install -r requirements.txt
 ```
-- 创建.env 文件，并复制 .env.example 中的内容过来，修改为您的对应的设置值。
-- 运行:创作故事
+- Create a .env file, copy the contents from .env.example, and modify it with your settings. Create a story
 ```
 python app.py
 ```
-- 生成图片/视频/PPTX：首先修改 generate.py 中的 story_id 为你想生成的故事 ID（从 app.py 的输出中得到）。然后运行：
+- Generate images/videos/PPTX: First, modify the story_id in generate.py to the story ID you want to generate (obtained from the output of app.py). Then run:
 ```
 python generate.py
 ```
 
-## 路线图
-- [ ]完善内容生成部分的逻辑
-- [ ]在故事内容创作和内容生成的过程中增加“人在回路”的逻辑
-- [ ]背景音乐
+## Roadmap
+- [ ] Improve the logic of content generation
+- [ ] Add "human-in-the-loop" logic during story content creation and generation
+- [ ] Background music
 
-## 常见问题
-- **支持其他语言么？**
-  支持的，在内容创作的 Prompt 部分已经有指令要求遵循用户的要求或者用户输入时采用的语言。
-- **语音的多语言呢？**
-  Azure的 TTS 支持上百种语言，您只需要将.env中的AZURE_SPEECH_VOICE_NAME指定为您所需要的语言的发音人即可（有的发音人本身就支持几十种不同国家的语言）
-- **视觉质量看起来不高**
-  两方面的因素：
-  - 一是目前我所展示的测试内容里采用的 Flux 的 Schnell 模型，为的是速度快和成本低。采用 dev 或者 pro 必然图片的视觉质量会有提高，目前代码中还未支持这两种不同的模型，未来会加入。
-  - 二是现有的图片评审逻辑还不够，还有改善的余地。
+
+## FAQ
+- **Does it support other languages?**
+  Yes, the content creation Prompt already includes instructions to follow the user's requirements or the language used by the user.
+- **What about multi-language speech?**
+  Azure's TTS supports hundreds of languages. You only need to specify the desired language's voice name in AZURE_SPEECH_VOICE_NAME in the .env file (some voices support dozens of different languages).
+- **The visual quality seems low**
+  Two factors:
+  - The test content currently displayed uses the Flux Schnell model for speed and low cost. Using the dev or pro versions will improve the visual quality. The current code does not yet support these models, but it will be added in the future.
+  - The existing image review logic is not sufficient and can be improved.
   
-## 其他
-[部分生成的内容演示参见这里](DEMO-Results.md)
+## Others
+[See some generated content demos here](DEMO-Results.md)
