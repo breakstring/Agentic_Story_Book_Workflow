@@ -42,14 +42,16 @@ python generate.py
 
 
 ## FAQ
-- **Does it support other languages?**
-  Yes, the content creation Prompt already includes instructions to follow the user's requirements or the language used by the user.
-- **What about multi-language speech?**
-  Azure's TTS supports hundreds of languages. You only need to specify the desired language's voice name in AZURE_SPEECH_VOICE_NAME in the .env file (some voices support dozens of different languages).
+- **I see that the story content in your demo is in Chinese. Does it support other languages?**
+  Yes, it does. In the prompt section for content creation, there are instructions to follow the user's requirements or the language used by the user.
+- **What about multilingual voice support?**
+  Azure's TTS supports hundreds of languages. You just need to specify the desired language's voice name in the AZURE_SPEECH_VOICE_NAME field in the .env file (some voices support dozens of different languages).
+- **Why are your prompts written in English?**
+  Undoubtedly, English prompts are slightly more effective than Chinese ones. A very useful tip is that there is a tool in Anthropic's Portal that helps you generate prompts. You can input your initial ideas there, and it will help you generate prompts that you only need to modify slightly before using them in your program.
 - **The visual quality seems low**
-  Two factors:
-  - The test content currently displayed uses the Flux Schnell model for speed and low cost. Using the dev or pro versions will improve the visual quality. The current code does not yet support these models, but it will be added in the future.
-  - The existing image review logic is not sufficient and can be improved.
+  There are two factors here:
+  - First, the test content I currently display uses the Schnell model from Flux, which is fast and cost-effective. Using the dev or pro models will undoubtedly improve the visual quality of the images. These models are not yet supported in the current code but will be added in the future.
+  - Second, the existing image review logic is not sufficient and has room for improvement.
   
 ## Others
 [See some generated content demos here](DEMO-Results.md)
