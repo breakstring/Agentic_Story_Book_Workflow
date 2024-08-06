@@ -21,7 +21,7 @@ def dalle_client_factory() -> Union[OpenAI, AzureOpenAI]:
     if os.environ.get("IMAGE_GENERATION_TYPE") == "azure":  # Azure DallE
         return AzureOpenAI(api_key=os.environ.get("DALLE_API_KEY"),
                            azure_deployment=os.environ.get("DALLE_MODEL"),
-                           api_version=os.environ.get("DALLE_API_VERSION"),
+                           api_version=os.environ.get("DALLE_API_VERSION","2024-06-01"),
                            azure_endpoint=os.environ.get("DALLE_BASE_URL"))
     else:
         return OpenAI(api_key=os.environ.get("DALLE_API_KEY"))
@@ -84,9 +84,9 @@ def generate_image_by_prompt(prompt_content: Annotated[str, "Prompt Content"]) -
 
                 dalle_result = dalle_client.images.generate(prompt=prompt_content,
                                                             n=1,
-                                                            quality=os.environ.get("DALLE_IMAGE_QUALITY"),
+                                                            quality=os.environ.get("DALLE_IMAGE_QUALITY",'hd'),
                                                             size=image_size,
-                                                            style=os.environ.get("DALLE_IMAGE_STYLE"),
+                                                            style=os.environ.get("DALLE_IMAGE_STYLE","vivid"),
                                                             response_format="url",
                                                             timeout=60)
 

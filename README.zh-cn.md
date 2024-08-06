@@ -18,7 +18,7 @@ https://github.com/user-attachments/assets/323d055a-27d9-487f-b8c4-2fad2df649cc
 - **Text2Image**: 支持 DALL-E 3 以及 Replicate 中的 Flux schnell。但是从成本和速度上考虑的话我最终选用了 Replicate 中的 Flux Schnell API 端点。因为
   - 在使用 Landscpae 或者 Portrait 模式的图片，HD 模式下DALL-E 3 的价格是 12$/100 张图，意味着每张图 0.12$，而且每张图要十多秒以上才能绘制完毕并得到结果。
   - 但是采用 Flux Schnell 的 API 服务每张图的成本只有 0.003$，绘图时间一般在 1 ～2 秒。从成本和时间调度来说 Flux Schnell 似乎更加合适，哪怕你觉得 Schnell 版本的质量不高，要使用 Flux Dev 版本的 API 成本也只有 0.03$而已（Replicate 上的 pro 版本成本为 0.055$，但是由于似乎它在 CPU 上，绘图速度很慢我就没有尝试），您也可以根据自己的需求来调整。
-- Azure 账号，并开通 Speech 服务资源。
+- **Azure 账号**，并开通 Speech 服务资源。
 
 ## 如何使用
 - 创建 python 虚拟环境（我这里是在 Python 3.11 上进行的测试），并安装依赖包
@@ -34,7 +34,34 @@ python app.py
 python generate.py
 ```
 
+## .env 环境变量
+|变量名|描述 |默认值|
+|:-----|:----|:-----:|
+|AGENTOPS_API_KEY| [AgentOps](https://app.agentops.ai/) API Key| |
+|MODEL|Azure 上的模型部署名或者 OpenAI 上的模型名 | |
+|API_VERSION|API Version|'2024-06-01'|
+|API_TYPE|'azure' 或者 'openai'|azure|
+|API_KEY|API Key| |
+|BASE_URL|API base url,  Azure 应该形如 'https://{region_name}.openai.azure.com/'||
+|IMAGE_GENERATION_TYPE|'azure', 'openai' 或者 'replicate'||
+|IMAGE_SHAPE|'landscape', 'portrait' 或者 'square'|landscape|
+|DALLE_MODEL|Azure 上的模型部署名或者 OpenAI 上的模型名 | |
+|DALLE_API_VERSION|API Version|'2024-06-01'|
+|DALLE_API_KEY|API Key| |
+|DALLE_BASE_URL|API base url, Azure 上应该形如 'https://{region_name}.openai.azure.com/'||
+|DALLE_IMAGE_QUALITY|'hd' 或者 'standard'|'hd'|
+|DALLE_IMAGE_STYLE|'vivid' 或者 'natural'|'vivid'|
+|REPLICATE_API_TOKEN|[repilicate](https://replicate.com/) api key| |
+|IMAGE_GENERATION_RETRIES|生成每张图片时的重试次数|3|
+|IMAGE_CRITICISM_RETRIES|每张图片的最大审核次数|2|
+|IMAGE_SAVE_FAILURED_IMAGES|是否保存生成后未采用的图片:True or False|False|
+|AZURE_SPEECH_KEY|Azure 语音的 API Key||
+|AZURE_SPEECH_REGION|Azure 服务语音部署区域||
+|AZURE_SPEECH_VOICE_NAME|Azure 语音发音人|'zh-CN-XiaoxiaoMultilingualNeural'|
+
+
 ## 路线图
+- [ ]增加更多 FLUX 模型版本和渠道
 - [ ]完善内容生成部分的逻辑
 - [ ]在故事内容创作和内容生成的过程中增加“人在回路”的逻辑
 - [ ]背景音乐

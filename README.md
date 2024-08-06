@@ -35,7 +35,36 @@ python app.py
 python generate.py
 ```
 
+
+## .env configurations
+|Enviroment Name|Description |Default Value|
+|:-----|:----|:-----:|
+|AGENTOPS_API_KEY| [AgentOps](https://app.agentops.ai/) API Key| |
+|MODEL|deployment name on azure or model name on OpenAI | |
+|API_VERSION|API Version|'2024-06-01'|
+|API_TYPE|'azure' or 'openai'|azure|
+|API_KEY|API Key| |
+|BASE_URL|API base url,  Azure should be like 'https://{region_name}.openai.azure.com/'||
+|IMAGE_GENERATION_TYPE|'azure', 'openai' or 'replicate'||
+|IMAGE_SHAPE|'landscape', 'portrait' or 'square'|landscape|
+|DALLE_MODEL|deployment name on azure or model name on OpenAI | |
+|DALLE_API_VERSION|API Version|'2024-06-01'|
+|DALLE_API_KEY|API Key| |
+|DALLE_BASE_URL|API base url, Azure should be like 'https://{region_name}.openai.azure.com/'||
+|DALLE_IMAGE_QUALITY|'hd' or 'standard'|'hd'|
+|DALLE_IMAGE_STYLE|'vivid' or 'natural'|'vivid'|
+|REPLICATE_API_TOKEN|[repilicate](https://replicate.com/) api key| |
+|IMAGE_GENERATION_RETRIES|max retry count per image|3|
+|IMAGE_CRITICISM_RETRIES|max critic count per image|2|
+|IMAGE_SAVE_FAILURED_IMAGES|save the critic failed image:True or False|False|
+|AZURE_SPEECH_KEY|Azure voice API Key||
+|AZURE_SPEECH_REGION|Azure voice deploy region||
+|AZURE_SPEECH_VOICE_NAME|Azure voice speaker name|'zh-CN-XiaoxiaoMultilingualNeural'|
+
+
+
 ## Roadmap
+- [ ] Add more FLUX models and channels
 - [ ] Improve the logic of content generation
 - [ ] Add "human-in-the-loop" logic during story content creation and generation
 - [ ] Background music

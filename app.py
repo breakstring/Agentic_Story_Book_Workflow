@@ -19,8 +19,8 @@ gpt_config_list_default = [{
     "model": os.environ.get("MODEL"),
     "api_key": os.environ.get("API_KEY"),
     "base_url": os.environ.get("BASE_URL"),
-    "api_type": os.environ.get("API_TYPE"),
-    "api_version": os.environ.get("API_VERSION"),
+    "api_type": os.environ.get("API_TYPE","azure"),
+    "api_version": os.environ.get("API_VERSION","2024-06-01"),
 }]
 
 dalle_config = {
@@ -37,6 +37,7 @@ dalle_config = {
 
 }
 
+# toggle this line if you don't use agentops
 #agentops.init(api_key=os.environ.get("AGENTOPS_API_KEY"))
 
 story_book_agents.init_agents(gpt_config_list_default)
