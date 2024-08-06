@@ -52,6 +52,7 @@ python generate.py
 |DALLE_IMAGE_QUALITY|'hd' 或者 'standard'|'hd'|
 |DALLE_IMAGE_STYLE|'vivid' 或者 'natural'|'vivid'|
 |REPLICATE_API_TOKEN|[repilicate](https://replicate.com/) api key| |
+|REPLICATE_MODEL_NAME| 'black-forest-labs/flux-schnell', 'black-forest-labs/flux-dev' or 'black-forest-labs/flux-pro'|'black-forest-labs/flux-schnell'|
 |IMAGE_GENERATION_RETRIES|生成每张图片时的重试次数|3|
 |IMAGE_CRITICISM_RETRIES|每张图片的最大审核次数|2|
 |IMAGE_SAVE_FAILURED_IMAGES|是否保存生成后未采用的图片:True or False|False|

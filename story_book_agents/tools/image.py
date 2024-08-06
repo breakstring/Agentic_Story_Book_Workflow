@@ -24,6 +24,7 @@ def dalle_client_factory() -> Union[OpenAI, AzureOpenAI]:
                            api_version=os.environ.get("DALLE_API_VERSION","2024-06-01"),
                            azure_endpoint=os.environ.get("DALLE_BASE_URL"))
     else:
+        # TODO: if env set the parameters, should also change this.
         return OpenAI(api_key=os.environ.get("DALLE_API_KEY"))
 
 
@@ -110,11 +111,13 @@ def generate_image_by_prompt(prompt_content: Annotated[str, "Prompt Content"]) -
                     "output_quality":90
                 }
                 replicate_output=replicate.run(
-                    "black-forest-labs/flux-schnell",
+                    os.environ.get("REPLICATE_MODEL_NAME","black-forest-labs/flux-schnell"),
                     input=replicate_input
                 )
-                return str(replicate_output),prompt_content
-            
+                if isinstance(replicate_output, list):
+                    return str(replicate_output[0]), prompt_content
+                return str(replicate_output), prompt_content
+                        
             else:
                 raise NotImplementedError(
                     f"IMAGE_GENERATION_TYPE:{os.environ.get('IMAGE_GENERATION_TYPE')} not implemented")

@@ -54,6 +54,7 @@ python generate.py
 |DALLE_IMAGE_QUALITY|'hd' or 'standard'|'hd'|
 |DALLE_IMAGE_STYLE|'vivid' or 'natural'|'vivid'|
 |REPLICATE_API_TOKEN|[repilicate](https://replicate.com/) api key| |
+|REPLICATE_MODEL_NAME| 'black-forest-labs/flux-schnell', 'black-forest-labs/flux-dev' or 'black-forest-labs/flux-pro'|'black-forest-labs/flux-schnell'|
 |IMAGE_GENERATION_RETRIES|max retry count per image|3|
 |IMAGE_CRITICISM_RETRIES|max critic count per image|2|
 |IMAGE_SAVE_FAILURED_IMAGES|save the critic failed image:True or False|False|
