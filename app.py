@@ -62,9 +62,14 @@ def main():
             "max_turns": 10,
             "summary_method": "reflection_with_llm",
             "summary_args": {
-                "summary_prompt": """Summarize the takeaway from the conversation. Do not add any introductory phrases.
-                                    If the user has explicitly specified a language for the picture book, then the language used in the summary should be consistent with the language specified by the user for the picture book; otherwise, the language used in the summary should be consistent with the main language the user used during the conversation.
-                                    """
+                "summary_prompt": """
+Summarize the key points from the conversation without any introductory phrases. 
+
+1. The summary must be in the same language as the user's specified language for the picture book if explicitly mentioned. 
+2. If the user did not specify a language, use the main language used by the user throughout the conversation.
+3. Ensure that the summary reflects the language used predominantly in the conversation, regardless of any predefined commands like "exit." 
+4. The summary should clearly reflect the user's requirements and preferences discussed during the conversation.
+"""
             }
         },
         # The Story Draft Group includes agents such as the Story Editor, Story Critic, Producer, and IT Assistant.
