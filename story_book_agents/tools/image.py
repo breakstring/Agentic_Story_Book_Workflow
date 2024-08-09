@@ -82,8 +82,8 @@ def generate_image_by_prompt(prompt_content: Annotated[str, "Prompt Content"]) -
                     image_size = "1024x1024"
                 else:
                     image_size = "1792x1024"
-
-                dalle_result = dalle_client.images.generate(prompt=prompt_content,
+                # TODO: It's just a temp approach, will fix later
+                dalle_result = dalle_client.images.generate(prompt=prompt_content + f" The scene is depicted in a {os.environ.get('IMAGE_STYLE_KEYWORD')} style.",
                                                             n=1,
                                                             quality=os.environ.get("DALLE_IMAGE_QUALITY",'hd'),
                                                             size=image_size,
@@ -106,7 +106,8 @@ def generate_image_by_prompt(prompt_content: Annotated[str, "Prompt Content"]) -
                 else:
                     aspect_ratio = "16:9"
                 replicate_input = {
-                    "prompt": prompt_content,
+                    # TODO: It's just a temp approach, will fix later
+                    "prompt": prompt_content + f" The scene is depicted in a {os.environ.get('IMAGE_STYLE_KEYWORD')} style.",
                     "aspect_ratio":aspect_ratio,
                     "output_quality":90
                 }
@@ -115,8 +116,8 @@ def generate_image_by_prompt(prompt_content: Annotated[str, "Prompt Content"]) -
                     input=replicate_input
                 )
                 if isinstance(replicate_output, list):
-                    return str(replicate_output[0]), prompt_content
-                return str(replicate_output), prompt_content
+                    return str(replicate_output[0]), prompt_content  + f" The scene is depicted in a {os.environ.get('IMAGE_STYLE_KEYWORD')} style."
+                return str(replicate_output), prompt_content + f" The scene is depicted in a {os.environ.get('IMAGE_STYLE_KEYWORD')} style."
                         
             else:
                 raise NotImplementedError(

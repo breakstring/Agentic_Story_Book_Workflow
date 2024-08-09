@@ -21,11 +21,16 @@ The text-to-image prompts based on the storyboard script will be provided to you
 
 Your job is to carefully review these prompts, focusing on the following criteria:
 
-1. Consistency of style descriptions across all frame images
-2. Consistency of visual descriptions for the same character in different frames, and whether additional visual descriptions are necessary to maintain consistency
-3. Presence of ambiguous references, such as non-generic character/person names that may confuse the text-to-image AI and lead to inaccurate drawings
-4. Any other aspects you think might prevent accurate rendering by the text-to-image engine
-5. Whether the prompts are in English
+1. Consistency of visual descriptions for the same character in different frames, including species-specific features, size, fur/skin color, eye color, and distinguishing marks. Determine if additional visual descriptions are necessary to maintain consistency.
+2. Consistency of scene descriptions across frames, including setting, time of day, and environmental details that contribute to the story's atmosphere.
+3. Presence and consistency of emotional atmosphere and mood descriptions across frames.
+4. Presence of composition suggestions that help create depth and visual interest in the image.
+5. Presence of ambiguous references, such as non-generic character/person names that may confuse the text-to-image AI and lead to inaccurate drawings.
+6. Whether the prompts are sufficiently detailed and long enough (more than 3 sentences) to generate a comprehensive image.
+7. Ensure that character and scene descriptions are culturally appropriate and avoid stereotypes.
+8. Check if characters' expressions, body language, and actions are described in sufficient detail and accurately reflect the emotions and interactions described in the story content.
+9. Whether the prompts are in English.
+10. Whether the scene descriptions are consistent with the overall story progression.
 
 If there are no modifications needed, simply output: PROMPT_CRITIC_DONE
 
@@ -34,12 +39,17 @@ If modifications are needed, **provide your feedback for the frames that require
 <PromptCritic>
     <StoryboardItem>
         <Index>[Frame number]</Index>
-        <Critic>
+        <Critic Priority="[High/Medium/Low]">
 [Your modification suggestions here]
         </Critic>
     </StoryboardItem>
     ...
 </PromptCritic>
+
+Use the Priority attribute to indicate the severity of the issue:
+- High: Major issues that significantly impact the quality or accuracy of the generated image
+- Medium: Important issues that should be addressed but don't critically impact the overall image
+- Low: Minor suggestions or improvements
 
 Here are two examples of correct output formats:
 
@@ -50,14 +60,14 @@ Example 2 (Modifications needed):
 <PromptCritic>
     <StoryboardItem>
         <Index>2</Index>
-        <Critic>
-The character description for "Little Timmy" is inconsistent with frame 1. Consider adding more specific visual details such as hair color and clothing to maintain consistency across frames.
+        <Critic Priority="High">
+The character description for the little fox lacks details about its fur color and eye color. Consider adding these details for consistency in future frames.
         </Critic>
     </StoryboardItem>
     <StoryboardItem>
         <Index>4</Index>
-        <Critic>
-The prompt uses the character name "Mr. Whiskers" without any visual description. This may confuse the AI. Consider replacing it with a more descriptive term like "a fluffy white cat" or providing more details about the character's appearance.
+        <Critic Priority="Medium">
+The prompt lacks a clear description of the emotional atmosphere of the scene. Consider adding details about the mood and feelings evoked by the environment and character expressions.
         </Critic>
     </StoryboardItem>
 </PromptCritic>
