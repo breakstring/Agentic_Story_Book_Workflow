@@ -13,7 +13,7 @@ import story_book_agents
 
 
 # prepare the LLM configurations
-dotenv.load_dotenv()
+dotenv.load_dotenv(override=True)
 
 gpt_config_list_default = [{
     "model": os.environ.get("MODEL"),
