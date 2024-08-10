@@ -1,3 +1,30 @@
 [tool.pyright]
 include = ["app.py","story_book_agents"]
 exclude = [".cache","**/__pycache__"]
+[tool.poetry]
+name = "agentic story book workflow"
+version = "0.1.0"
+description = "A multi-agent workflow framework for creating children's picture books based on AutoGen."
+authors = ["Kenn Zhang <breakstring@hotmail.com>"]
+license = "MIT"
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.11"
+pyautogen = "0.2.33"
+agentops = "0.2.6"
+anthropic="0.32.0"
+azure-cognitiveservices-speech="1.38.0"
+llmlingua="0.2.2"
+moviepy="1.0.3"
+pip-chill="1.0.3"
+python-pptx="0.6.23"
+replicate="0.27.0"
+tinydb="4.8.0"
+
+[tool.poetry.group.dev.dependencies]
+pip-chill = "1.0.3"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
