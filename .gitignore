@@ -313,3 +313,4 @@ autogen_logs
 AOAI_CONFIG_LIST.json
 
 !output/placeholder.txt
+.DS_Store

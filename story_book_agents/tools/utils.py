@@ -205,3 +205,17 @@ def update_prompt_by_story_id_and_frame_number(story_id: Annotated[str, "Story I
 
     db.update(story_prompts, prompts.story_id == story_id)
     db.close()
+
+def get_last_story_id() -> Annotated[str, "Story ID"]:
+    """
+    Get last story ID
+
+    Returns:
+    Annotated[str, "Story ID"]: Story ID
+
+    """
+    db = TinyDB('output/stories.json',
+                storage=CachingMiddleware(MyJSONStorage))
+    stories = db.all()
+    db.close()
+    return stories[-1]['story_id']
