@@ -1,4 +1,5 @@
 [中文版](README.zh-cn.md)
+[日本語](README.ja-jp.md)
 
 ## Agentic Story Book Workflow
 A multi-agent workflow framework for creating children's picture books based on [AutoGen](https://microsoft.github.io/autogen/).
